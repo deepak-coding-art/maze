@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Maze-game</title>
+  </head>
+  <body>
+    <main class="game-page">
+      <img
+        class="texture-img hide"
+        id="texture-tile"
+        src="./assets/wood_texture.jpg"
+        alt="texture"
+      />
+      <img
+        class="texture-img hide"
+        id="zombie-male"
+        src="./assets/zombie.png"
+        alt="texture"
+      />
+      <img
+        class="texture-img hide"
+        id="boy"
+        src="./assets/boy.png"
+        alt="texture"
+      />
+      <img
+        class="texture-img hide"
+        id="boy-dead"
+        src="./assets/boy-dead.png"
+        alt="texture"
+      />
+      <img
+        class="texture-img hide"
+        id="house"
+        src="./assets/house.png"
+        alt="texture"
+      />
+      <canvas id="maze" width="400" height="400"></canvas>
+      <div class="get-help-popup hide" id="gameWin">
+        <div class="get-help-popup-content">
+          <img
+            class="popup-logo-image"
+            src="./assets/logo-big-dark.png"
+            alt="logo"
+          />
+          <h1>Do you need help getting home? Contact Jackson Realty Today.</h1>
+          <a class="button" href="https://www.jackson-realty.com/">Get help</a>
+        </div>
+      </div>
+      <button class="button get-help-button" onclick="getHelp()">
+        Get help from Jackson Realty
+      </button>
+      <div class="branding">
+        <img class="branding-img" src="./assets/logo-small.png" alt="logo" />
+      </div>
+
+      <div class="get-help-popup hide" id="gameOver">
+        <div class="gameOver-cont">
+          <h1>Game Over</h1>
+          <h1>Need help</h1>
+          <button class="button" onclick="getHelp()">
+            Get help from Jackson Realty
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-controls">
+        <button class="arrow-keys" id="up-key">up</button>
+        <div>
+          <button class="arrow-keys" id="left-key">left</button>
+          <button class="arrow-keys" id="right-key">right</button>
+        </div>
+        <button class="arrow-keys" id="down-key">down</button>
+      </div>
+
+      <div class="got-help hide" id="help-message">You we got help</div>
+      <div class="get-help-popup" id="loadingScreen">
+        <h1 style="color: white">Loading...</h1>
+      </div>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>
