@@ -155,7 +155,7 @@ function checkPosition() {
     if (notHelped) {
       obstacles.splice(removeIndex, 1);
       drawAll();
-      if (obstacles.length < 5) {
+      if (obstacles.length < 4) {
         showHelp();
       }
     } else {
