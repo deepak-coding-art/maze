@@ -48,7 +48,7 @@ body {
 
 .get-help-popup-content {
   background-color: white;
-  width: 90%;
+  width: 80%;
   max-width: 600px;
   border-radius: 5px;
   padding: 1rem;
@@ -125,7 +125,7 @@ body {
 
 .gameOver-cont {
   background-color: white;
-  width: 90%;
+  width: 80%;
   max-width: 600px;
   border-radius: 5px;
   padding: 1rem;
@@ -147,7 +147,7 @@ body {
   position: absolute;
   opacity: 0;
   left: 50%;
-  top: 80%;
+  top: 50%;
   transform: translate(-50%, 100px);
   background-color: #89dba9;
   padding: 1rem;

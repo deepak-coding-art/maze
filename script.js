@@ -60,28 +60,34 @@ function drawMaze() {
 }
 
 // Add obstacles
-let obstacles = [
-  { x: 13, y: 3, id: "attacker" },
+const defaultObstacles = [
+  { x: 13, y: 3 },
   { x: 13, y: 11 },
-  { x: 3, y: 10 },
-  { x: 7, y: 2 },
-  { x: 7, y: 7 },
-  // { x: 4, y: 4 },
-  // { x: 3, y: 5 },
+  { x: 7, y: 5 },
+  { x: 1, y: 4 },
+  { x: 11, y: 14 },
+  { x: 5, y: 14 },
 ];
+let obstacles = [...defaultObstacles];
 
 function drawObstacles() {
   for (let i = 0; i < obstacles.length; i++) {
     const obstacle = obstacles[i];
     context.fillStyle = "red";
     context.drawImage(
-      zombieMail,
+      houseSprite,
       obstacle.x * cellWidth,
       obstacle.y * cellHeight,
       cellWidth,
       cellHeight
     );
   }
+}
+
+function drawAll() {
+  drawMaze();
+  drawObstacles();
+  drawCharacter();
 }
 
 // Add character
@@ -109,18 +115,9 @@ function drawCharacterDead() {
   );
 }
 
-// Add home
-const home = { x: mazeWidth - 2, y: mazeHeight - 2 };
-
-function drawHome() {
-  context.fillStyle = "blue";
-  context.drawImage(
-    houseSprite,
-    home.x * cellWidth,
-    home.y * cellHeight,
-    cellWidth,
-    cellHeight
-  );
+function showHelp() {
+  gameOver = true;
+  gameOverScreen.classList.remove("hide");
 }
 
 function checkAttack() {
@@ -132,16 +129,38 @@ function checkAttack() {
       drawMaze();
       drawCharacterDead();
       drawObstacles();
-      drawHome();
-      gameOver = true;
-      gameOverScreen.classList.remove("hide");
+      showHelp();
     }
   }
 }
 
-function winPopup() {
+function checkEnter() {
   if (character.x === home.x && character.y === home.y) {
     gameWinScreen.classList.remove("hide");
+  }
+}
+
+function winPopup() {
+  gameWinScreen.classList.remove("hide");
+}
+
+function checkPosition() {
+  let removeIndex;
+  obstacles.forEach((obstacle, index) => {
+    if (obstacle.x === character.x && obstacle.y === character.y) {
+      removeIndex = index;
+    }
+  });
+  if (removeIndex >= 0) {
+    if (notHelped) {
+      obstacles.splice(removeIndex, 1);
+      drawAll();
+      if (obstacles.length < 5) {
+        showHelp();
+      }
+    } else {
+      winPopup();
+    }
   }
 }
 
@@ -154,10 +173,7 @@ document.addEventListener("keydown", (event) => {
     case "ArrowUp":
       if (maze[character.y - 1][character.x] === 0) {
         character.y--;
-        drawMaze();
-        drawObstacles();
-        drawCharacter();
-        drawHome();
+        drawAll();
       }
       break;
     case "ArrowDown":
@@ -166,19 +182,13 @@ document.addEventListener("keydown", (event) => {
         maze[character.y + 1][character.x] === 0
       ) {
         character.y++;
-        drawMaze();
-        drawObstacles();
-        drawCharacter();
-        drawHome();
+        drawAll();
       }
       break;
     case "ArrowLeft":
       if (character.x > 0 && maze[character.y][character.x - 1] === 0) {
         character.x--;
-        drawMaze();
-        drawObstacles();
-        drawCharacter();
-        drawHome();
+        drawAll();
       }
       break;
     case "ArrowRight":
@@ -187,18 +197,12 @@ document.addEventListener("keydown", (event) => {
         maze[character.y][character.x + 1] === 0
       ) {
         character.x++;
-        drawMaze();
-        drawObstacles();
-        drawCharacter();
-        drawHome();
+        drawAll();
       }
       break;
   }
 
-  // Check if character has reached home
-
-  winPopup();
-  checkAttack();
+  checkPosition();
 });
 
 document.getElementById("up-key").addEventListener("click", () => {
@@ -207,13 +211,9 @@ document.getElementById("up-key").addEventListener("click", () => {
   }
   if (maze[character.y - 1][character.x] === 0) {
     character.y--;
-    drawMaze();
-    drawObstacles();
-    drawCharacter();
-    drawHome();
+    drawAll();
   }
-  checkAttack();
-  winPopup();
+  checkPosition();
 });
 
 document.getElementById("left-key").addEventListener("click", () => {
@@ -222,13 +222,9 @@ document.getElementById("left-key").addEventListener("click", () => {
   }
   if (character.x > 0 && maze[character.y][character.x - 1] === 0) {
     character.x--;
-    drawMaze();
-    drawObstacles();
-    drawCharacter();
-    drawHome();
+    drawAll();
   }
-  checkAttack();
-  winPopup();
+  checkPosition();
 });
 
 document.getElementById("right-key").addEventListener("click", () => {
@@ -237,13 +233,9 @@ document.getElementById("right-key").addEventListener("click", () => {
   }
   if (character.x < mazeWidth - 1 && maze[character.y][character.x + 1] === 0) {
     character.x++;
-    drawMaze();
-    drawObstacles();
-    drawCharacter();
-    drawHome();
+    drawAll();
   }
-  checkAttack();
-  winPopup();
+  checkPosition();
 });
 
 document.getElementById("down-key").addEventListener("click", () => {
@@ -255,40 +247,21 @@ document.getElementById("down-key").addEventListener("click", () => {
     maze[character.y + 1][character.x] === 0
   ) {
     character.y++;
-    drawMaze();
-    drawObstacles();
-    drawCharacter();
-    drawHome();
+    drawAll();
   }
-  checkAttack();
-  winPopup();
+  checkPosition();
 });
 
 function getHelp() {
   gameOverScreen.classList.add("hide");
   notHelped = false;
   gameOver = false;
-  character = { x: 1, y: 1 };
-  obstacles = [
-    { x: 13, y: 3, id: "attacker" },
-    { x: 13, y: 11 },
-    { x: 3, y: 10 },
-    { x: 7, y: 2 },
-    { x: 7, y: 7 },
-    // { x: 4, y: 4 },
-    // { x: 3, y: 5 },
-  ];
-  drawMaze();
-  drawObstacles();
-  drawCharacter();
-  drawHome();
+  obstacles = [{ x: 14, y: 14 }];
+  drawAll();
   helpMessage.classList.remove("hide");
 }
 
 window.addEventListener("load", () => {
   loadingScreen.classList.add("hide");
-  drawMaze();
-  drawCharacter();
-  drawHome();
-  drawObstacles();
+  drawAll();
 });
