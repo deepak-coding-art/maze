@@ -156,6 +156,10 @@ body {
   animation: moveIn 1s ease-in;
 }
 
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+}
+
 @keyframes moveIn {
   0% {
     transform: translate(-50%, 100px);
